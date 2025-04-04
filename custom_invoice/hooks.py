@@ -9,17 +9,17 @@ app_license = "mit"
 # ------------
 after_install = "custom_invoice.setup.after_install"
 
+# Fixtures
+# These will be exported when bench export-fixtures is executed
+# ----------------------
 fixtures = [
     {
         "dt": "Custom Field", 
         "filters": [["name", "in", [
-            "Sales Invoice-custom_details_section",
-            "Sales Invoice-control_no",
-            "Sales Invoice-part_no",
-            "Sales Invoice-transportation_mode",
-            "Sales Invoice-transportation_name",
-            "Sales Invoice-no_of_packages",
-            "Sales Invoice-packing_details"
+            "Sales Invoice-other_details_section",
+            "Sales Invoice-control_no_new",
+            "Sales Invoice-order_details",
+            "Sales Invoice-packing_details_new"
         ]]]
     }
 ]

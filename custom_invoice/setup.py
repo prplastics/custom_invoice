@@ -8,56 +8,33 @@ def after_install():
     custom_fields = {
         "Sales Invoice": [
             {
-                "fieldname": "custom_details_section",
-                "label": "Custom Details",
+                "fieldname": "other_details_section",
+                "label": "Other Details",
                 "fieldtype": "Section Break",
                 "insert_after": "is_debit_note",
                 "collapsible": 1
             },
             {
-                "fieldname": "control_no",
+                "fieldname": "control_no_new",
                 "label": "Control No.",
-                "fieldtype": "Data",
-                "insert_after": "custom_details_section",
+                "fieldtype": "Text Editor",  # Large text area
+                "insert_after": "other_details_section",
                 "translatable": 0,
                 "print_hide_if_no_value": 1  # Hide in print if no value
             },
             {
-                "fieldname": "part_no",
-                "label": "Part No.",
-                "fieldtype": "Data",
-                "insert_after": "control_no",
+                "fieldname": "order_details",
+                "label": "Order Details",
+                "fieldtype": "Text Editor",  # Large text area
+                "insert_after": "control_no_new",
                 "translatable": 0,
                 "print_hide_if_no_value": 1  # Hide in print if no value
             },
             {
-                "fieldname": "transportation_mode",
-                "label": "Transportation Mode",
-                "fieldtype": "Data",
-                "insert_after": "part_no",
-                "translatable": 0,
-                "print_hide_if_no_value": 1  # Hide in print if no value
-            },
-            {
-                "fieldname": "transportation_name",
-                "label": "Transportation Name",
-                "fieldtype": "Data",
-                "insert_after": "transportation_mode",
-                "translatable": 0,
-                "print_hide_if_no_value": 1  # Hide in print if no value
-            },
-            {
-                "fieldname": "no_of_packages",
-                "label": "No. of Packages",
-                "fieldtype": "Int",
-                "insert_after": "transportation_name",
-                "print_hide_if_no_value": 1  # Hide in print if no value
-            },
-            {
-                "fieldname": "packing_details",
+                "fieldname": "packing_details_new",
                 "label": "Packing Details",
-                "fieldtype": "Small Text",
-                "insert_after": "no_of_packages",
+                "fieldtype": "Text Editor",  # Changed to Text Editor for larger text area
+                "insert_after": "order_details",
                 "translatable": 0,
                 "print_hide_if_no_value": 1  # Hide in print if no value
             }
