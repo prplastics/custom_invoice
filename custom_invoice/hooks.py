@@ -5,6 +5,24 @@ app_description = "Custom app for prplastics erp"
 app_email = "hello@metazapp.com"
 app_license = "mit"
 
+# Installation
+# ------------
+after_install = "custom_invoice.setup.after_install"
+
+fixtures = [
+    {
+        "dt": "Custom Field", 
+        "filters": [["name", "in", [
+            "Sales Invoice-control_no",
+            "Sales Invoice-part_no",
+            "Sales Invoice-transportation_section",
+            "Sales Invoice-transportation_mode",
+            "Sales Invoice-transportation_name",
+            "Sales Invoice-no_of_packages",
+            "Sales Invoice-packing_details"
+        ]]]
+    }
+]
 # Apps
 # ------------------
 
