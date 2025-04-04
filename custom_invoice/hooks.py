@@ -13,9 +13,9 @@ fixtures = [
     {
         "dt": "Custom Field", 
         "filters": [["name", "in", [
+            "Sales Invoice-custom_details_section",
             "Sales Invoice-control_no",
             "Sales Invoice-part_no",
-            "Sales Invoice-transportation_section",
             "Sales Invoice-transportation_mode",
             "Sales Invoice-transportation_name",
             "Sales Invoice-no_of_packages",

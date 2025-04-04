@@ -8,10 +8,17 @@ def after_install():
     custom_fields = {
         "Sales Invoice": [
             {
+                "fieldname": "custom_details_section",
+                "label": "Custom Details",
+                "fieldtype": "Section Break",
+                "insert_after": "is_debit_note",
+                "collapsible": 1
+            },
+            {
                 "fieldname": "control_no",
                 "label": "Control No.",
                 "fieldtype": "Data",
-                "insert_after": "posting_time",
+                "insert_after": "custom_details_section",
                 "translatable": 0,
                 "print_hide_if_no_value": 1  # Hide in print if no value
             },
@@ -24,17 +31,10 @@ def after_install():
                 "print_hide_if_no_value": 1  # Hide in print if no value
             },
             {
-                "fieldname": "transportation_section",
-                "label": "Transportation Details",
-                "fieldtype": "Section Break",
-                "insert_after": "is_debit_note",  # Changed to place after is_debit_note
-                "collapsible": 1
-            },
-            {
                 "fieldname": "transportation_mode",
                 "label": "Transportation Mode",
                 "fieldtype": "Data",
-                "insert_after": "transportation_section",
+                "insert_after": "part_no",
                 "translatable": 0,
                 "print_hide_if_no_value": 1  # Hide in print if no value
             },
