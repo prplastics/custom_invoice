@@ -1,9 +1,10 @@
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
+from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 
 def after_install():
     """
-    Add custom fields to Sales Invoice after app installation
+    Add custom fields to Sales Invoice and Item doctype and modify field labels
     """
     custom_fields = {
         "Sales Invoice": [
@@ -38,8 +39,31 @@ def after_install():
                 "translatable": 0,
                 "print_hide_if_no_value": 1  # Hide in print if no value
             }
+        ],
+        "Item": [
+            {
+                "fieldname": "customer_part_no",
+                "label": "Customer Part No.",
+                "fieldtype": "Data",
+                "insert_after": "item_code",
+                "translatable": 0,
+                "reqd": 1  # Making it mandatory
+            },
+            {
+                "fieldname": "hsn_sac",
+                "label": "HSN/SAC",
+                "fieldtype": "Data",
+                "insert_after": "customer_part_no",
+                "translatable": 0,
+                "reqd": 1  # Making it mandatory
+            }
         ]
     }
     
     create_custom_fields(custom_fields)
-    frappe.msgprint("Custom fields added to Sales Invoice")
+    
+    # Change the label of item_code and item_name fields
+    make_property_setter("Item", "item_code", "label", "Item Code (Part No.)", "Data")
+    make_property_setter("Item", "item_name", "label", "Item Name (Part No.)", "Data")
+    
+    frappe.msgprint("Custom fields added to Sales Invoice and Item doctype, and field labels updated")
