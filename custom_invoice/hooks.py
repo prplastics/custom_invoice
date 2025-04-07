@@ -14,16 +14,14 @@ after_install = "custom_invoice.setup.after_install"
 # ----------------------
 fixtures = [
     {
-        "dt": "Custom Field", 
+         "dt": "Custom Field", 
         "filters": [["name", "in", [
             "Sales Invoice-other_details_section",
             "Sales Invoice-control_no_new",
             "Sales Invoice-order_details",
             "Sales Invoice-packing_details_new",
-            "Sales Invoice Item-customer_part_no",
-            "Sales Invoice Item-hsn_sac",
-            "Sales Invoice Item-original_item_code",
-            "Sales Invoice Item-original_item_name"
+            "Item-customer_part_no",
+            "Item-hsn_sac"
         ]]]
     }
 ]
