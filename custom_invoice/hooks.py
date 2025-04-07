@@ -7,7 +7,16 @@ app_license = "mit"
 
 # Installation
 # ------------
-after_install = "custom_invoice.setup.after_install"
+after_install = [
+    "custom_invoice.setup.after_install",
+    "custom_invoice.add_print_format.add_print_format"
+]
+
+# Include custom JS
+# ------------------
+doctype_js = {
+    "Sales Invoice": "public/js/custom_invoice.js"
+}
 
 # Fixtures
 # These will be exported when bench export-fixtures is executed
@@ -25,8 +34,15 @@ fixtures = [
            "Sales Invoice-order_details",
            "Sales Invoice-packing_details_new",
            "Item-customer_part_no",
-           "Item-hsn_sac"
+           "Item-hsn_sac",
+           "Sales Invoice Item-customer_part_no",
+           "Sales Invoice Item-description_of_goods",
+           "Sales Invoice Item-hsn_sac_code"
        ]]]
+   },
+   {
+        "dt": "Property Setter",
+        "filters": [["doc_type", "in", ["Item", "Sales Invoice Item"]]]
    }
 ]
 # Apps

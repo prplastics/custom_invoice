@@ -4,7 +4,8 @@ from frappe.custom.doctype.property_setter.property_setter import make_property_
 
 def after_install():
     """
-    Add custom fields to Sales Invoice and Item doctype and modify field labels
+    Add custom fields to Sales Invoice and Item doctype, modify field labels,
+    and customize the Item table in Sales Invoice
     """
     custom_fields = {
         "Sales Invoice": [
@@ -89,13 +90,50 @@ def after_install():
                 "translatable": 0,
                 "reqd": 1  # Making it mandatory
             }
+        ],
+        "Sales Invoice Item": [
+            {
+                "fieldname": "customer_part_no",
+                "label": "Customer Part No.",
+                "fieldtype": "Data",
+                "insert_after": "item_name",
+                "fetch_from": "item_code.customer_part_no",
+                "read_only": 1,
+                "in_list_view": 1,
+                "print_hide": 0
+            },
+            {
+                "fieldname": "hsn_sac_code",
+                "label": "HSN/SAC",
+                "fieldtype": "Data",
+                "insert_after": "customer_part_no",
+                "fetch_from": "item_code.hsn_sac",
+                "read_only": 1,
+                "in_list_view": 1,
+                "print_hide": 0
+            }
         ]
     }
     
     create_custom_fields(custom_fields)
     
-    # Change the label of item_code and item_name fields
+    # Change the label of item_code and item_name fields in Item doctype
     make_property_setter("Item", "item_code", "label", "Item Code (Part No.)", "Data")
     make_property_setter("Item", "item_name", "label", "Item Name (Part No.)", "Data")
     
-    frappe.msgprint("Custom fields added to Sales Invoice and Item doctype, and field labels updated")
+    # Change the label of item_code field in Sales Invoice Item table to "Part No."
+    make_property_setter("Sales Invoice Item", "item_code", "label", "Part No.", "Data")
+    
+    # Configure which fields to show in the Item table grid view
+    # We need to explicitly set which fields should be visible in the grid
+    make_property_setter("Sales Invoice Item", "item_code", "in_list_view", 1, "Check")
+    make_property_setter("Sales Invoice Item", "customer_part_no", "in_list_view", 1, "Check")
+    make_property_setter("Sales Invoice Item", "hsn_sac_code", "in_list_view", 1, "Check")
+    make_property_setter("Sales Invoice Item", "qty", "in_list_view", 1, "Check")
+    make_property_setter("Sales Invoice Item", "rate", "in_list_view", 1, "Check") 
+    make_property_setter("Sales Invoice Item", "amount", "in_list_view", 1, "Check")
+    
+    # Increase the maximum columns shown in the grid view
+    make_property_setter("Sales Invoice Item", None, "max_columns", 8, "Int")
+    
+    frappe.msgprint("Custom fields added to Sales Invoice and Item doctype, field labels updated, and Sales Invoice Item table customized")
