@@ -13,17 +13,21 @@ after_install = "custom_invoice.setup.after_install"
 # These will be exported when bench export-fixtures is executed
 # ----------------------
 fixtures = [
-    {
-         "dt": "Custom Field", 
+   {
+        "dt": "Custom Field",
         "filters": [["name", "in", [
-            "Sales Invoice-other_details_section",
-            "Sales Invoice-control_no_new",
-            "Sales Invoice-order_details",
-            "Sales Invoice-packing_details_new",
-            "Item-customer_part_no",
-            "Item-hsn_sac"
-        ]]]
-    }
+           "Sales Invoice-other_details_section",
+           "Sales Invoice-dispatched_through",
+           "Sales Invoice-eway_bill_no",
+           "Sales Invoice-freight_charges",
+           "Sales Invoice-misc_charges",
+           "Sales Invoice-control_no_new",
+           "Sales Invoice-order_details",
+           "Sales Invoice-packing_details_new",
+           "Item-customer_part_no",
+           "Item-hsn_sac"
+       ]]]
+   }
 ]
 # Apps
 # ------------------

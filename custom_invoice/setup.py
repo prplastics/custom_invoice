@@ -16,10 +16,42 @@ def after_install():
                 "collapsible": 1
             },
             {
+                "fieldname": "dispatched_through",
+                "label": "Dispatched Through",
+                "fieldtype": "Data",
+                "insert_after": "other_details_section",
+                "translatable": 0,
+                "print_hide_if_no_value": 1  # Hide in print if no value
+            },
+            {
+                "fieldname": "eway_bill_no",
+                "label": "E-way Bill No.",
+                "fieldtype": "Data",
+                "insert_after": "dispatched_through",
+                "translatable": 0,
+                "print_hide_if_no_value": 1  # Hide in print if no value
+            },
+            {
+                "fieldname": "freight_charges",
+                "label": "Freight Charges",
+                "fieldtype": "Currency",
+                "insert_after": "eway_bill_no",
+                "translatable": 0,
+                "print_hide_if_no_value": 1  # Hide in print if no value
+            },
+            {
+                "fieldname": "misc_charges",
+                "label": "Miscellaneous Charges",
+                "fieldtype": "Currency",
+                "insert_after": "freight_charges",
+                "translatable": 0,
+                "print_hide_if_no_value": 1  # Hide in print if no value
+            },
+            {
                 "fieldname": "control_no_new",
                 "label": "Control No.",
                 "fieldtype": "Text Editor",  # Large text area
-                "insert_after": "other_details_section",
+                "insert_after": "misc_charges",
                 "translatable": 0,
                 "print_hide_if_no_value": 1  # Hide in print if no value
             },
