@@ -220,121 +220,135 @@ def get_html_content():
        </tfoot>
    </table>
 </div>
-  <!-- Bottom Sections using divs and flexbox -->
-<div style="border: none; border-top: none;">
-   <!-- Total in words and Add section -->
-   <div style="display: flex; margin: 0;">
-       <!-- Left column (68%) -->
-       <div style="width: 68%; border-right: 1px solid #000;">
-           <!-- Total in words header -->
-           <div style="border-bottom: 1px solid #000; padding: 1px 5px; text-align: center; font-weight: bold; font-size: 8pt;">
-               Total in words
-           </div>
-           <!-- Total in words value - with two line spaces -->
-           <div style="border-bottom: 1px solid #000; padding: 1px 5px; font-size: 8pt; min-height: 40px;">
-               {{ doc.in_words }}
-           </div>
-          
-           <!-- Bank Details section (70% height) -->
-           <div style="border-bottom: 1px solid #000; padding: 1px 5px; text-align: center; font-weight: bold; font-size: 8pt;">
-               Bank Details
-           </div>
-           <div style="border-bottom: 1px solid #000; padding: 1px 5px; font-size: 8pt; min-height: 90px;">
-               {% set company_address = frappe.get_doc("Address", doc.company_address) if doc.company_address else None %}
-               {% if company_address and company_address.bank_details %}
-                   {{ company_address.bank_details }}
-               {% endif %}
-           </div>
-          
-           <!-- Terms and Conditions section (30% height) -->
-           <div style="border-bottom: 1px solid #000; padding: 1px 5px; text-align: center; font-weight: bold; font-size: 8pt;">
-               Terms and Conditions
-           </div>
-           <div style="padding: 1px 5px; font-size: 8pt; min-height: 30px;">
-               {{ doc.terms or '' }}
-           </div>
-       </div>
-      
-       <!-- Right column (32%) -->
-       <div style="width: 32%;">
-           <!-- Add: header -->
-           <div style="border-bottom: 1px solid #000; padding: 1px 5px; font-weight: bold; font-size: 8pt;">
-               Add:
-           </div>
-          
-           <!-- Charges section - Column alignment adjusted to match item table -->
-           <div style="font-size: 8pt;">
-               <!-- Freight Charges -->
-               <div style="display: flex; border-bottom: 1px solid #000;">
-                   <div style="width: 58%; padding: 1px 5px; text-align: left; border-right: 1px solid #000;">Freight Charges</div>
-                   <div style="width: 42%; padding: 1px 5px; text-align: right;">{{ "{:,.2f}".format(doc.freight_charges or 0) }}</div>
-               </div>
-              
-               <!-- Misc Charges -->
-               <div style="display: flex; border-bottom: 1px solid #000;">
-                   <div style="width: 58%; padding: 1px 5px; text-align: left; border-right: 1px solid #000;">Misc Charges</div>
-                   <div style="width: 42%; padding: 1px 5px; text-align: right;">{{ "{:,.2f}".format(doc.misc_charges or 0) }}</div>
-               </div>
-              
-               <!-- Taxable Value -->
-               <div style="display: flex; border-bottom: 1px solid #000;">
-                   <div style="width: 58%; padding: 1px 5px; text-align: left; border-right: 1px solid #000;">Taxable Value</div>
-                   <div style="width: 42%; padding: 1px 5px; text-align: right;">{{ "{:,.2f}".format(doc.net_total) }}</div>
-               </div>
-              
-               <!-- CGST -->
-               <div style="display: flex; border-bottom: 1px solid #000;">
-                   <div style="width: 58%; padding: 1px 5px; text-align: left; border-right: 1px solid #000;">CGST</div>
-                   <div style="width: 42%; padding: 1px 5px; text-align: right;">
-                       {% set cgst_amount = 0 %}
-                       {% for tax in doc.taxes %}
-                           {% if tax.description and 'CGST' in tax.description %}
-                               {% set cgst_amount = tax.tax_amount %}
-                           {% endif %}
-                       {% endfor %}
-                       {{ "{:,.2f}".format(cgst_amount) }}
-                   </div>
-               </div>
-              
-               <!-- SGST -->
-               <div style="display: flex; border-bottom: 1px solid #000;">
-                   <div style="width: 58%; padding: 1px 5px; text-align: left; border-right: 1px solid #000;">SGST</div>
-                   <div style="width: 42%; padding: 1px 5px; text-align: right;">
-                       {% set sgst_amount = 0 %}
-                       {% for tax in doc.taxes %}
-                           {% if tax.description and 'SGST' in tax.description %}
-                               {% set sgst_amount = tax.tax_amount %}
-                           {% endif %}
-                       {% endfor %}
-                       {{ "{:,.2f}".format(sgst_amount) }}
-                   </div>
-               </div>
-              
-               <!-- Total Invoice Value -->
-               <div style="display: flex; border-bottom: 1px solid #000;">
-                   <div style="width: 58%; padding: 1px 5px; text-align: left; font-weight: bold; border-right: 1px solid #000;">Total Invoice value</div>
-                   <div style="width: 42%; padding: 1px 5px; text-align: right; font-weight: bold;">{{ "{:,.2f}".format(doc.grand_total) }}</div>
-               </div>
-              
-               <!-- Certification section -->
-               <div style="padding: 5px; text-align: center; font-size: 7pt; border-bottom: 1px solid #000;">
-                   <p style="margin: 0; text-align: center; line-height: 1.2;">Certified that the particulars given above are true and correct.</p>
-                   <p style="margin: 0; text-align: center; font-weight: bold; line-height: 1.2;">For PR Plastics</p>
-               </div>
-              
-               <!-- Space for seal/stamp -->
-               <div style="height: 60px; border-bottom: 1px solid #000;">
-                   &nbsp;
-               </div>
-              
-               <!-- Authorized signatory -->
-               <div style="height: 25px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding: 5px;">
-                   <p style="margin: 0; display: inline-block; padding-top: 1px; text-align: center; font-size: 8pt;">Authorised signatory</p>
-               </div>
-           </div>
-       </div>
-   </div>
-</div>
+  <!-- Bottom Sections using tables for PDF compatibility -->
+<table style="width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 8pt;">
+    <tr>
+      <!-- Left Side: Total in words, Bank Details, Terms -->
+      <td style="width: 68%; vertical-align: top; border-right: 1px solid #000;">
+        <!-- Total in Words -->
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="border-bottom: 1px solid #000; text-align: center; font-weight: bold; padding: 2px;">
+              Total in words
+            </td>
+          </tr>
+          <tr>
+            <td style="border-bottom: 1px solid #000; padding: 5px; height: 40px; vertical-align: top;">
+              {{ doc.in_words }}
+            </td>
+          </tr>
+        </table>
+  
+        <!-- Bank Details -->
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="border-bottom: 1px solid #000; text-align: center; font-weight: bold; padding: 2px;">
+              Bank Details
+            </td>
+          </tr>
+          <tr>
+            <td style="border-bottom: 1px solid #000; padding: 5px; height: 90px; vertical-align: top;">
+              {% set company_address = frappe.get_doc("Address", doc.company_address) if doc.company_address else None %}
+              {% if company_address and company_address.bank_details %}
+                {{ company_address.bank_details }}
+              {% endif %}
+            </td>
+          </tr>
+        </table>
+  
+        <!-- Terms and Conditions -->
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="border-bottom: 1px solid #000; text-align: center; font-weight: bold; padding: 2px;">
+              Terms and Conditions
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 5px; height: 30px; vertical-align: top;">
+              {{ doc.terms or '' }}
+            </td>
+          </tr>
+        </table>
+      </td>
+  
+      <!-- Right Side: Charges and Signature -->
+      <td style="width: 32%; vertical-align: top;">
+        <!-- Add Charges -->
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td colspan="2" style="border-bottom: 1px solid #000; font-weight: bold; padding: 2px;">Add:</td>
+          </tr>
+          <tr>
+            <td style="width: 58%; border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">Freight Charges</td>
+            <td style="width: 42%; text-align: right; border-bottom: 1px solid #000; padding: 2px;">
+              {{ "{:,.2f}".format(doc.freight_charges or 0) }}
+            </td>
+          </tr>
+          <tr>
+            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">Misc Charges</td>
+            <td style="text-align: right; border-bottom: 1px solid #000; padding: 2px;">
+              {{ "{:,.2f}".format(doc.misc_charges or 0) }}
+            </td>
+          </tr>
+          <tr>
+            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">Taxable Value</td>
+            <td style="text-align: right; border-bottom: 1px solid #000; padding: 2px;">
+              {{ "{:,.2f}".format(doc.net_total) }}
+            </td>
+          </tr>
+          <tr>
+            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">CGST</td>
+            <td style="text-align: right; border-bottom: 1px solid #000; padding: 2px;">
+              {% set cgst_amount = 0 %}
+              {% for tax in doc.taxes %}
+                {% if tax.description and 'CGST' in tax.description %}
+                  {% set cgst_amount = tax.tax_amount %}
+                {% endif %}
+              {% endfor %}
+              {{ "{:,.2f}".format(cgst_amount) }}
+            </td>
+          </tr>
+          <tr>
+            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">SGST</td>
+            <td style="text-align: right; border-bottom: 1px solid #000; padding: 2px;">
+              {% set sgst_amount = 0 %}
+              {% for tax in doc.taxes %}
+                {% if tax.description and 'SGST' in tax.description %}
+                  {% set sgst_amount = tax.tax_amount %}
+                {% endif %}
+              {% endfor %}
+              {{ "{:,.2f}".format(sgst_amount) }}
+            </td>
+          </tr>
+          <tr>
+            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold; padding: 2px;">Total Invoice Value</td>
+            <td style="text-align: right; border-bottom: 1px solid #000; font-weight: bold; padding: 2px;">
+              {{ "{:,.2f}".format(doc.grand_total) }}
+            </td>
+          </tr>
+        </table>
+  
+        <!-- Certification -->
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="border-bottom: 1px solid #000; text-align: center; font-size: 7pt; padding: 3px;">
+              <p style="margin: 0;">Certified that the particulars given above are true and correct.</p>
+              <p style="margin: 0; font-weight: bold;">For PR Plastics</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="height: 60px; border-bottom: 1px solid #000;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="height: 25px; text-align: center; padding: 5px;">
+              <span style="font-size: 8pt;">Authorised signatory</span>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  
 <style>
 /* CSS to control margins when printing */
 @media print {
