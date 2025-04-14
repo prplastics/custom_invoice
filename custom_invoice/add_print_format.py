@@ -61,311 +61,335 @@ def add_print_format():
 def get_html_content():
     """Return the HTML content for the print format"""
     return """
-<div style="font-family: Arial, sans-serif; font-size: 9pt; color: #000; max-width: 8.27in; margin: 0 auto; padding: 0 5px;">
-   <div style="border: 1px solid #000;">
-       <!-- Header Section - Single Image with border -->
-       <div style="margin: 0; text-align: center; border-bottom: 1px solid #000;">
-           <table style="width: 100%; border-collapse: collapse; margin: 0;">
-               <tr>
-                   <td style="padding: 0;">
-                       <img src="/assets/custom_invoice/images/pr_plastics_header.png" alt="PR Plastics Header" style="width: 100%; max-width: 800px; height: auto; display: block;">
-                   </td>
-               </tr>
-           </table>
-       </div>
-
-
-       <!-- GSTIN and Invoice Title Row -->
-       <div style="border-bottom: 1px solid #000; margin-bottom: 0;">
-           <table style="width: 100%; border-collapse: collapse; margin: 0;">
-               <tr>
-                   <td style="width: 33.33%; border-right: 1px solid #000; padding: 1px 5px; font-size: 8pt;">
-                       <strong>GSTIN: 33ATNPR3816R1ZW</strong>
-                   </td>
-                   <td style="width: 33.33%; border-right: 1px solid #000; padding: 1px 5px; text-align: center;">
-                       <strong style="font-size: 10pt;">INVOICE</strong>
-                   </td>
-                   <td style="width: 33.33%; padding: 1px 5px; text-align: right; font-size: 8pt;">
-                       <strong>Triplicate</strong>
-                   </td>
-               </tr>
-           </table>
-       </div>
-
-
-       <!-- Customer and Invoice Details Section - REDUCED HEIGHT -->
-       <div style="border-bottom: 1px solid #000; margin-bottom: 0;">
-           <table style="width: 100%; border-collapse: collapse; margin: 0;">
-               <tr>
-                   <td style="width: 50%; border-right: 1px solid #000; padding: 2px 5px; vertical-align: top;">
-                       <p style="margin: 0 0 1px 0; font-weight: bold; font-size: 8pt;">Customer Details</p>
-                       <p style="font-size: 8pt; margin: 0; line-height: 1.2;">{{ doc.customer_name }}</p>
-                       <p style="font-size: 8pt; margin: 0; line-height: 1.2;">{{ doc.address_display or '' }}</p>
-                       <!-- {% if doc.contact_display %}
-                       <p style="font-size: 8pt; margin: 0; line-height: 1;">{{ doc.contact_display }}</p>
-                       {% endif %} -->
-                   </td>
-                   <td style="width: 50%; padding: 2px 5px; vertical-align: top;">
-                       <table style="width: 100%; font-size: 8pt; border-spacing: 0; line-height: 0.1;">
-                           <tr>
-                               <td style="padding: 0 2px 0 0; white-space: nowrap;"><strong>Invoice No</strong>:</td>
-                               <td style="padding: 0;">{{ doc.name }}</td>
-                           </tr>
-                           <tr>
-                               <td style="padding: 0 2px 0 0; white-space: nowrap;"><strong>Invoice Date</strong>:</td>
-                               <td style="padding: 0;">{{ doc.posting_date }}</td>
-                           </tr>
-                           <tr>
-                               <td style="padding: 0 2px 0 0; white-space: nowrap;"><strong>Dispatched Through</strong>:</td>
-                               <td style="padding: 0;">{{ doc.dispatched_through or '' }}</td>
-                           </tr>
-                           <tr>
-                               <td style="padding: 0 2px 0 0; white-space: nowrap;"><strong>Payment Method</strong>:</td>
-                               <td style="padding: 0;">{{ doc.payment_terms_template or '' }}</td>
-                           </tr>
-                           <tr>
-                               <td style="padding: 0 2px 0 0; white-space: nowrap;"><strong>E.Way Bill No</strong>:</td>
-                               <td style="padding: 0;">{{ doc.eway_bill_no or '' }}</td>
-                           </tr>
-                       </table>
-                   </td>
-               </tr>
-           </table>
-       </div>
-
-
-<!-- Order Details, Control No, Packing Details Section - MATCHING ITEM TABLE STYLE -->
-<div style="margin-bottom: 0;">
-   <table style="width: 100%; border-collapse: collapse; font-size: 8pt; margin: 0;">
-       <tr>
-           <th style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: 1px solid #000; padding: 2px 5px; text-align: center; width: 33.33%; font-weight: bold;">
-               Order Details
-           </th>
-           <th style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: 1px solid #000; padding: 2px 5px; text-align: center; width: 33.33%; font-weight: bold;">
-               Control No
-           </th>
-           <th style="border: 1px solid #000; border-left: none; border-right: none; border-top: none; border-bottom: 1px solid #000; padding: 2px 5px; text-align: center; width: 33.33%; font-weight: bold;">
-               Packing Details
-           </th>
-       </tr>
-       <tr>
-           <td style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: none; padding: 2px 5px; width: 33.33%; vertical-align: top;">
-               <p style="font-size: 8pt; margin: 0; line-height: 1.2;">{{ doc.order_details or '' }}</p>
-           </td>
-           <td style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: none; padding: 2px 5px; width: 33.33%; vertical-align: top;">
-               <p style="font-size: 8pt; margin: 0; line-height: 1.2;">{{ doc.control_no_new or '' }}</p>
-           </td>
-           <td style="border: 1px solid #000; border-left: none; border-right: none; border-top: none; border-bottom: none; padding: 2px 5px; width: 33.33%; vertical-align: top;">
-               <p style="font-size: 8pt; margin: 0; line-height: 1.2;">{{ doc.packing_details_new or '' }}</p>
-           </td>
-       </tr>
-   </table>
-</div>
-
-
-<!-- Items Table - With controlled border thickness and no row borders except total row -->
-<div style="margin-bottom: 0;">
-   <table style="width: 100%; border-collapse: collapse; font-size: 8pt; margin: 0;">
-       <thead>
-           <tr>
-               <th style="border: 1px solid #000; border-left: none; padding: 1px; text-align: center; width: 2%;">S.No.</th>
-               <th style="border: 1px solid #000; border-left: none; padding: 1px; text-align: center; width: 12%;">Part No.</th>
-               <th style="border: 1px solid #000; border-left: none; padding: 1px; text-align: center; width: 15%;">Consumer Part No.</th>
-               <th style="border: 1px solid #000; border-left: none; padding: 1px; text-align: center; width: 29%;">Description Of Goods</th>
-               <th style="border: 1px solid #000; border-left: none; padding: 1px; text-align: center; width: 10%;">HSN/SAC</th>
-               <th style="border: 1px solid #000; border-left: none; padding: 1px; text-align: center; width: 10%;">Quantity</th>
-               <th style="border: 1px solid #000; border-left: none; padding: 1px; text-align: center; width: 10%;">Rate</th>
-               <th style="border: 1px solid #000; border-left: none; border-right: none; padding: 1px; text-align: center; width: 12%;">Total</th>
-           </tr>
-       </thead>
-       <tbody>
-           {% for item in doc.items %}
-           <tr>
-               <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; padding: 1px; text-align: center; width: 2%;">{{ loop.index }}</td>
-               <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; padding: 1px; text-align: center; width: 12%;">{{ item.item_code }}</td>
-               <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; padding: 1px; text-align: center; width: 15%;">{{ item.customer_part_no or '' }}</td>
-               <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; padding: 1px; width: 29%;">{{ item.description_of_goods or item.description or '' }}</td>
-               <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; padding: 1px; text-align: center; width: 10%;">{{ item.hsn_sac_code or '' }}</td>
-               <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; padding: 1px; text-align: center; width: 10%;">{{ item.qty }}</td>
-               <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; padding: 1px; text-align: right; width: 10%;">{{ "{:,.2f}".format(item.rate) }}</td>
-               <td style="border-left: none; border-top: none; border-bottom: none; border-right: none; padding: 1px; text-align: right; width: 12%;">{{ "{:,.2f}".format(item.amount) }}</td>
-           </tr>
-           {% endfor %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PR Plastics Invoice</title>
+  <style>
+    /* Base styles for better print rendering */
+    @page {
+      size: A4;
+      margin: 0mm !important;
+    }
+    
+    body, html {
+      margin: 0 !important;
+      padding: 0 !important;
+      font-family: Arial, sans-serif;
+      font-size: 8pt;
+      width: 210mm;
+      height: 297mm;
+    }
+    
+    .print-format {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 210mm !important;
+    }
+    
+    @media print {
+      body {
+        width: 210mm;
+      }
+      .main-container {
+        width: 100%;
+        max-width: 210mm;
+      }
+    }
+    
+    /* Container styles */
+    .main-container {
+      border: 1px solid #000;
+      box-sizing: border-box;
+      margin: 2mm auto;
+      width: 98%;
+    }
+    
+    /* Table styles */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    /* Common cell styles */
+    td, th {
+      padding: 1px 2px;
+      vertical-align: top;
+      font-size: 7.5pt;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Header Image -->
+    <div style="text-align: center; border-bottom: 1px solid #000;">
+      <img src="/assets/custom_invoice/images/pr_plastics_header.png" alt="PR Plastics Header" style="width: 100%; max-width: 800px; height: auto; display: block; margin: 0 auto;">
+    </div>
+    
+    <!-- GSTIN and Invoice Title Row -->
+    <table style="margin: 0; border-bottom: 1px solid #000;">
+      <tr>
+        <td style="width: 33%; border-right: 1px solid #000; font-size: 8pt;">
+          <strong>GSTIN: 33ATNPR3816R1ZW</strong>
+        </td>
+        <td style="width: 33%; border-right: 1px solid #000; text-align: center;">
+          <strong style="font-size: 10pt;">INVOICE</strong>
+        </td>
+        <td style="width: 33%; text-align: right; font-size: 8pt;">
+          <strong>Triplicate</strong>
+        </td>
+      </tr>
+    </table>
+    
+    <!-- Customer and Invoice Details Section -->
+    <table style="margin: 0; border-bottom: 1px solid #000;">
+      <tr>
+        <td style="width: 50%; border-right: 1px solid #000;">
+          <div style="margin: 0 0 1px 0; font-weight: bold; font-size: 8pt;">Customer Details</div>
+          <div style="font-size: 7.5pt; margin: 0; line-height: 1;">{{ doc.customer_name }}</div>
+          <div style="font-size: 7.5pt; margin: 0; line-height: 1;">{{ doc.address_display or '' }}</div>
+        </td>
+        <td style="width: 50%;">
+          <table style="width: 100%; font-size: 7.5pt; border-spacing: 0; line-height: 0.1;">
+            <tr>
+              <td style="padding: 0 1px 0 0; white-space: nowrap;"><strong>Invoice No</strong>:</td>
+              <td style="padding: 0;">{{ doc.name }}</td>
+            </tr>
+            <tr>
+              <td style="padding: 0 1px 0 0; white-space: nowrap;"><strong>Invoice Date</strong>:</td>
+              <td style="padding: 0;">{{ doc.posting_date }}</td>
+            </tr>
+            <tr>
+              <td style="padding: 0 1px 0 0; white-space: nowrap;"><strong>Dispatched Through</strong>:</td>
+              <td style="padding: 0;">{{ doc.dispatched_through or '' }}</td>
+            </tr>
+            <tr>
+              <td style="padding: 0 1px 0 0; white-space: nowrap;"><strong>Payment Method</strong>:</td>
+              <td style="padding: 0;">{{ doc.payment_terms_template or '' }}</td>
+            </tr>
+            <tr>
+              <td style="padding: 0 1px 0 0; white-space: nowrap;"><strong>E.Way Bill No</strong>:</td>
+              <td style="padding: 0;">{{ doc.eway_bill_no or '' }}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    
+    <!-- Order Details, Control No, Packing Details Section -->
+    <table style="margin: 0; font-size: 7.5pt;">
+      <tr>
+        <th style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: 1px solid #000; text-align: center; width: 33.33%; font-weight: bold;">
+          <strong>Order Details</strong>
+        </th>
+        <th style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: 1px solid #000; text-align: center; width: 33.33%; font-weight: bold;">
+          <strong>Control No</strong>
+        </th>
+        <th style="border: 1px solid #000; border-left: none; border-right: none; border-top: none; border-bottom: 1px solid #000; text-align: center; width: 33.33%; font-weight: bold;">
+          <strong>Packing Details</strong>
+        </th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: none; width: 33.33%; vertical-align: top; height: 16px;">
+          <div style="font-size: 7pt; margin: 0; line-height: 1;">{{ doc.order_details or '' }}</div>
+        </td>
+        <td style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: none; width: 33.33%; vertical-align: top; height: 16px;">
+          <div style="font-size: 7pt; margin: 0; line-height: 1;">{{ doc.control_no_new or '' }}</div>
+        </td>
+        <td style="border: 1px solid #000; border-left: none; border-right: none; border-top: none; border-bottom: none; width: 33.33%; vertical-align: top; height: 16px;">
+          <div style="font-size: 7pt; margin: 0; line-height: 1;">{{ doc.packing_details_new or '' }}</div>
+        </td>
+      </tr>
+    </table>
+    
+    <!-- Items Table -->
+    <table style="margin: 0; font-size: 7pt;">
+      <thead>
+        <tr>
+          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 4%;"><strong>S.No.</strong></th>
+          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 12%;"><strong>Part No.</strong></th>
+          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 14%;"><strong>Consumer Part No.</strong></th>
+          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 28%;"><strong>Description Of Goods</strong></th>
+          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 10%;"><strong>HSN/SAC</strong></th>
+          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 10%;"><strong>Quantity</strong></th>
+          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 10%;"><strong>Rate</strong></th>
+          <th style="border: 1px solid #000; border-left: none; border-right: none; text-align: center; width: 12%;"><strong>Total</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in doc.items %}
+        <tr style="height: 14px;">
+          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">{{ loop.index }}</td>
+          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">{{ item.item_code }}</td>
+          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">{{ item.customer_part_no or '' }}</td>
+          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">{{ item.description_of_goods or item.description or '' }}</td>
+          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">{{ item.hsn_sac_code or '' }}</td>
+          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">{{ item.qty }}</td>
+          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: right;">{{ "{:,.2f}".format(item.rate) }}</td>
+          <td style="border-left: none; border-top: none; border-bottom: none; border-right: none; text-align: right;">{{ "{:,.2f}".format(item.amount) }}</td>
+        </tr>
+        {% endfor %}
+        
+        <!-- Empty rows to fill space if needed -->
+        {% set remaining_rows = 5 - doc.items|length %}
+        {% if remaining_rows > 0 and remaining_rows <= 5 %}
+          {% for i in range(remaining_rows) %}
+          <tr style="height: 14px;">
+            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+            <td style="border-left: none; border-top: none; border-bottom: none; border-right: none;">&nbsp;</td>
+          </tr>
+          {% endfor %}
+        {% endif %}
+      </tbody>
+      <tfoot>
+        <!-- Total row -->
+        <tr>
+          <td colspan="5" style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: right; font-weight: bold;">Total</td>
+          <td style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: center;">{{ doc.total_qty }}</td>
+          <td style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000;">&nbsp;</td>
+          <td style="border-left: none; border-right: none; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: right; font-weight: bold;">{{ "{:,.2f}".format(doc.total) }}</td>
+        </tr>
+      </tfoot>
+    </table>
+    
+    <!-- Bottom Sections With Fixed Table Rows -->
+    <div style="display: table; width: 100%; border-collapse: collapse; font-size: 7pt; margin-top: 2px;">
+      <div style="display: table-row;">
+        <!-- Left Side: Total in words, Bank Details, Terms -->
+        <div style="display: table-cell; width: 68%; vertical-align: top; border-right: 1px solid #000;">
+          <!-- Total in Words -->
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="text-align: center; font-weight: bold; border-bottom: 1px solid #000; padding: 1px;">
+                Total in words
+              </td>
+            </tr>
+            <tr>
+              <td style="border-bottom: 1px solid #000; padding: 2px; height: 18px; vertical-align: top; line-height: 1.1;">
+                {{ doc.in_words }}
+              </td>
+            </tr>
+          </table>
           
-           <!-- Empty rows to fill space if needed - without horizontal borders -->
-           {% set remaining_rows = 5 - doc.items|length %}
-           {% if remaining_rows > 0 and remaining_rows <= 5 %}
-               {% for i in range(remaining_rows) %}
-               <tr style="height: 14px;">
-                   <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; width: 2%;">&nbsp;</td>
-                   <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; width: 12%;">&nbsp;</td>
-                   <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; width: 15%;">&nbsp;</td>
-                   <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; width: 29%;">&nbsp;</td>
-                   <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; width: 10%;">&nbsp;</td>
-                   <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; width: 10%;">&nbsp;</td>
-                   <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; width: 10%;">&nbsp;</td>
-                   <td style="border-left: none; border-top: none; border-bottom: none; border-right: none; width: 12%;">&nbsp;</td>
-               </tr>
-               {% endfor %}
-           {% endif %}
-       </tbody>
-       <tfoot>
-           <!-- Total row - Border at the top and bottom -->
-           <tr>
-               <td colspan="5" style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 1px; text-align: right; font-weight: bold; width: 68%;">Total</td>
-               <td style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 1px; text-align: center; width: 10%;">{{ doc.total_qty }}</td>
-               <td style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; width: 10%;">&nbsp;</td>
-               <td style="border-left: none; border-right: none; border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 1px; text-align: right; font-weight: bold; width: 12%;">{{ "{:,.2f}".format(doc.total) }}</td>
-           </tr>
-       </tfoot>
-   </table>
-</div>
-  <!-- Bottom Sections using tables for PDF compatibility -->
-<table style="width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 8pt;">
-    <tr>
-      <!-- Left Side: Total in words, Bank Details, Terms -->
-      <td style="width: 68%; vertical-align: top; border-right: 1px solid #000;">
-        <!-- Total in Words -->
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td style="border-bottom: 1px solid #000; text-align: center; font-weight: bold; padding: 2px;">
-              Total in words
-            </td>
-          </tr>
-          <tr>
-            <td style="border-bottom: 1px solid #000; padding: 5px; height: 40px; vertical-align: top;">
-              {{ doc.in_words }}
-            </td>
-          </tr>
-        </table>
-  
-        <!-- Bank Details -->
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td style="border-bottom: 1px solid #000; text-align: center; font-weight: bold; padding: 2px;">
-              Bank Details
-            </td>
-          </tr>
-          <tr>
-            <td style="border-bottom: 1px solid #000; padding: 5px; height: 90px; vertical-align: top;">
-              {% set company_address = frappe.get_doc("Address", doc.company_address) if doc.company_address else None %}
-              {% if company_address and company_address.bank_details %}
-                {{ company_address.bank_details }}
-              {% endif %}
-            </td>
-          </tr>
-        </table>
-  
-        <!-- Terms and Conditions -->
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td style="border-bottom: 1px solid #000; text-align: center; font-weight: bold; padding: 2px;">
-              Terms and Conditions
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 5px; height: 30px; vertical-align: top;">
-              {{ doc.terms or '' }}
-            </td>
-          </tr>
-        </table>
-      </td>
-  
-      <!-- Right Side: Charges and Signature -->
-      <td style="width: 32%; vertical-align: top;">
-        <!-- Add Charges -->
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td colspan="2" style="border-bottom: 1px solid #000; font-weight: bold; padding: 2px;">Add:</td>
-          </tr>
-          <tr>
-            <td style="width: 58%; border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">Freight Charges</td>
-            <td style="width: 42%; text-align: right; border-bottom: 1px solid #000; padding: 2px;">
-              {{ "{:,.2f}".format(doc.freight_charges or 0) }}
-            </td>
-          </tr>
-          <tr>
-            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">Misc Charges</td>
-            <td style="text-align: right; border-bottom: 1px solid #000; padding: 2px;">
-              {{ "{:,.2f}".format(doc.misc_charges or 0) }}
-            </td>
-          </tr>
-          <tr>
-            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">Taxable Value</td>
-            <td style="text-align: right; border-bottom: 1px solid #000; padding: 2px;">
-              {{ "{:,.2f}".format(doc.net_total) }}
-            </td>
-          </tr>
-          <tr>
-            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">CGST</td>
-            <td style="text-align: right; border-bottom: 1px solid #000; padding: 2px;">
-              {% set cgst_amount = 0 %}
-              {% for tax in doc.taxes %}
-                {% if tax.description and 'CGST' in tax.description %}
-                  {% set cgst_amount = tax.tax_amount %}
+          <!-- Bank Details - Balanced height -->
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="text-align: center; font-weight: bold; border-bottom: 1px solid #000; padding: 1px;">
+                Bank Details
+              </td>
+            </tr>
+            <tr>
+              <td style="border-bottom: 1px solid #000; padding: 1px; height: 40px; vertical-align: top; line-height: 1;">
+                {% set company_address = frappe.get_doc("Address", doc.company_address) if doc.company_address else None %}
+                {% if company_address and company_address.bank_details %}
+                  {{ company_address.bank_details }}
                 {% endif %}
-              {% endfor %}
-              {{ "{:,.2f}".format(cgst_amount) }}
-            </td>
-          </tr>
-          <tr>
-            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 2px;">SGST</td>
-            <td style="text-align: right; border-bottom: 1px solid #000; padding: 2px;">
-              {% set sgst_amount = 0 %}
-              {% for tax in doc.taxes %}
-                {% if tax.description and 'SGST' in tax.description %}
-                  {% set sgst_amount = tax.tax_amount %}
-                {% endif %}
-              {% endfor %}
-              {{ "{:,.2f}".format(sgst_amount) }}
-            </td>
-          </tr>
-          <tr>
-            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold; padding: 2px;">Total Invoice Value</td>
-            <td style="text-align: right; border-bottom: 1px solid #000; font-weight: bold; padding: 2px;">
-              {{ "{:,.2f}".format(doc.grand_total) }}
-            </td>
-          </tr>
-        </table>
-  
-        <!-- Certification -->
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td style="border-bottom: 1px solid #000; text-align: center; font-size: 7pt; padding: 3px;">
-              <p style="margin: 0;">Certified that the particulars given above are true and correct.</p>
-              <p style="margin: 0; font-weight: bold;">For PR Plastics</p>
-            </td>
-          </tr>
-          <tr>
-            <td style="height: 60px; border-bottom: 1px solid #000;">&nbsp;</td>
-          </tr>
-          <tr>
-            <td style="height: 25px; text-align: center; padding: 5px;">
-              <span style="font-size: 8pt;">Authorised signatory</span>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-  
-<style>
-/* CSS to control margins when printing */
-@media print {
-   @page {
-       margin: 5px;
-       padding: 0;
-   }
-   body {
-       margin: 5px;
-       padding: 0;
-   }
-   .print-format {
-       margin: 5px !important;
-       padding: 0 !important;
-   }
-}
-</style>
+              </td>
+            </tr>
+          </table>
+          
+          <!-- Terms and Conditions - Minimal but usable height -->
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="text-align: center; font-weight: bold; border-bottom: 1px solid #000; padding: 1px;">
+                Terms and Conditions
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 1px; height: 8px; vertical-align: top; line-height: 1;">
+                {{ doc.terms or '' }}
+              </td>
+            </tr>
+          </table>
+        </div>
+        
+        <!-- Right Side: Charges and Signature -->
+        <div style="display: table-cell; width: 32%; vertical-align: top;">
+          <!-- Add Charges Table -->
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td colspan="2" style="border-bottom: 1px solid #000; font-weight: bold; padding: 1px;">Add:</td>
+            </tr>
+            <tr>
+              <td style="width: 60%; border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">Freight Charges</td>
+              <td style="width: 40%; text-align: right; border-bottom: 1px solid #000; padding: 1px;">
+                {{ "{:,.2f}".format(doc.freight_charges or 0) }}
+              </td>
+            </tr>
+            <tr>
+              <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">Misc Charges</td>
+              <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
+                {{ "{:,.2f}".format(doc.misc_charges or 0) }}
+              </td>
+            </tr>
+            <tr>
+              <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">Taxable Value</td>
+              <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
+                {{ "{:,.2f}".format(doc.net_total) }}
+              </td>
+            </tr>
+            <tr>
+              <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">CGST</td>
+              <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
+                {% set cgst_amount = 0 %}
+                {% for tax in doc.taxes %}
+                  {% if tax.description and 'CGST' in tax.description %}
+                    {% set cgst_amount = tax.tax_amount %}
+                  {% endif %}
+                {% endfor %}
+                {{ "{:,.2f}".format(cgst_amount) }}
+              </td>
+            </tr>
+            <tr>
+              <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">SGST</td>
+              <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
+                {% set sgst_amount = 0 %}
+                {% for tax in doc.taxes %}
+                  {% if tax.description and 'SGST' in tax.description %}
+                    {% set sgst_amount = tax.tax_amount %}
+                  {% endif %}
+                {% endfor %}
+                {{ "{:,.2f}".format(sgst_amount) }}
+              </td>
+            </tr>
+            <tr>
+              <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold; padding: 1px;">Total Invoice Value</td>
+              <td style="text-align: right; border-bottom: 1px solid #000; font-weight: bold; padding: 1px;">
+                {{ "{:,.2f}".format(doc.grand_total) }}
+              </td>
+            </tr>
+          </table>
+          
+          <!-- Certification -->
+          <table style="width: 100%; border-collapse: collapse; margin-top: 2px;">
+            <tr>
+              <td style="border-bottom: 1px solid #000; text-align: center; padding: 1px;">
+                <span style="font-size: 7pt;">Certified that the particulars given above are true and correct.</span><br>
+                <span style="font-size: 7pt; font-weight: bold;">For PR Plastics</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="height: 25px; border-bottom: 1px solid #000;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; padding: 1px;">
+                <span style="font-size: 7pt;">Authorised signatory</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
     """
 
 # If you want to run this file directly for testing
