@@ -69,41 +69,33 @@ def get_html_content():
   <style>
     /* Base styles for better print rendering */
     @page {
-      size: A4;
-      margin: 0mm !important;
+      size: A4 portrait;
+      margin: 3mm;
     }
     
     body, html {
-      margin: 0 !important;
-      padding: 0 !important;
+      margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
       font-size: 8pt;
-      width: 210mm;
-      height: 297mm;
     }
     
+    /* Force single page printing */
     .print-format {
-      margin: 0 !important;
-      padding: 0 !important;
-      width: 210mm !important;
-    }
-    
-    @media print {
-      body {
-        width: 210mm;
-      }
-      .main-container {
-        width: 100%;
-        max-width: 210mm;
-      }
+      margin: 0;
+      padding: 0;
+      page-break-after: avoid;
     }
     
     /* Container styles */
     .main-container {
       border: 1px solid #000;
       box-sizing: border-box;
-      margin: 2mm auto;
-      width: 98%;
+      margin: 0 auto;
+      width: 100%;
+      overflow: hidden;
+      page-break-inside: avoid;
+      max-height: 285mm; /* Critical size limit to ensure it fits on one page */
     }
     
     /* Table styles */
@@ -114,10 +106,43 @@ def get_html_content():
     
     /* Common cell styles */
     td, th {
-      padding: 1px 2px;
+      padding: 1px 1px;
       vertical-align: top;
       font-size: 7.5pt;
     }
+    
+    /* Fix for items table */
+    .items-table {
+      width: 100%;
+      table-layout: fixed;
+    }
+    
+    /* Column width fixes */
+    .col-sno { width: 3%; }
+    .col-partno { width: 12%; }
+    .col-consumer { width: 16%; }
+    .col-desc { width: 27%; }
+    .col-hsn { width: 10%; }
+    .col-qty { width: 14%; }
+    .col-rate { width: 8%; }
+    .col-total { width: 10%; }
+    
+    /* Bottom section compact styling */
+    .signatory-row {
+      page-break-inside: avoid;
+      page-break-after: avoid;
+    }
+    
+    /* Make the bottom tables more compact */
+    .compact-bottom td {
+      padding: 0px;
+      line-height: 1;
+    }
+    
+    /* Reduce heights of bottom sections */
+    .words-height { height: 15px !important; }
+    .bank-height { height: 40px !important; }
+    .terms-height { height: 30px !important; }
   </style>
 </head>
 <body>
@@ -131,13 +156,12 @@ def get_html_content():
     <table style="margin: 0; border-bottom: 1px solid #000;">
       <tr>
         <td style="width: 33%; border-right: 1px solid #000; font-size: 8pt;">
-          <strong>GSTIN: 33ATNPR3816R1ZW</strong>
-        </td>
+          GSTIN: 33ATNPR3816R1ZW
         <td style="width: 33%; border-right: 1px solid #000; text-align: center;">
-          <strong style="font-size: 10pt;">INVOICE</strong>
+          <strong style="font-size: 8pt;">INVOICE</strong>
         </td>
         <td style="width: 33%; text-align: right; font-size: 8pt;">
-          <strong>Triplicate</strong>
+         Triplicate
         </td>
       </tr>
     </table>
@@ -177,216 +201,269 @@ def get_html_content():
       </tr>
     </table>
     
-    <!-- Order Details, Control No, Packing Details Section -->
-    <table style="margin: 0; font-size: 7.5pt;">
-      <tr>
-        <th style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: 1px solid #000; text-align: center; width: 33.33%; font-weight: bold;">
-          <strong>Order Details</strong>
-        </th>
-        <th style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: 1px solid #000; text-align: center; width: 33.33%; font-weight: bold;">
-          <strong>Control No</strong>
-        </th>
-        <th style="border: 1px solid #000; border-left: none; border-right: none; border-top: none; border-bottom: 1px solid #000; text-align: center; width: 33.33%; font-weight: bold;">
-          <strong>Packing Details</strong>
-        </th>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: none; width: 33.33%; vertical-align: top; height: 16px;">
-          <div style="font-size: 7pt; margin: 0; line-height: 1;">{{ doc.order_details or '' }}</div>
-        </td>
-        <td style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: none; width: 33.33%; vertical-align: top; height: 16px;">
-          <div style="font-size: 7pt; margin: 0; line-height: 1;">{{ doc.control_no_new or '' }}</div>
-        </td>
-        <td style="border: 1px solid #000; border-left: none; border-right: none; border-top: none; border-bottom: none; width: 33.33%; vertical-align: top; height: 16px;">
-          <div style="font-size: 7pt; margin: 0; line-height: 1;">{{ doc.packing_details_new or '' }}</div>
-        </td>
-      </tr>
-    </table>
+<!-- Order Details, Control No, Packing Details Section with Reduced Height -->
+<table style="margin: 0; font-size: 7.5pt; table-layout: fixed;">
+  <tr>
+    <th style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: 1px solid #000; text-align: center; width: 33.33%; font-weight: bold; padding: 1px;">
+      <strong>Order Details</strong>
+    </th>
+    <th style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: 1px solid #000; text-align: center; width: 33.33%; font-weight: bold; padding: 1px;">
+      <strong>Control No</strong>
+    </th>
+    <th style="border: 1px solid #000; border-left: none; border-right: none; border-top: none; border-bottom: 1px solid #000; text-align: center; width: 33.33%; font-weight: bold; padding: 1px;">
+      <strong>Packing Details</strong>
+    </th>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: none; width: 33.33%; vertical-align: top; padding: 1px;">
+      <div style="font-size: 8pt; margin: 0; line-height: 1;">{{ doc.order_details or '' }}</div>
+    </td>
+    <td style="border: 1px solid #000; border-left: none; border-top: none; border-bottom: none; width: 33.33%; vertical-align: top; padding: 1px;">
+      <div style="font-size: 8pt; margin: 0; line-height: 1;">{{ doc.control_no_new or '' }}</div>
+    </td>
+    <td style="border: 1px solid #000; border-left: none; border-right: none; border-top: none; border-bottom: none; width: 33.33%; vertical-align: top; padding: 1px;">
+      <div style="font-size: 8pt; margin: 0; line-height: 1;">{{ doc.packing_details_new or '' }}</div>
+    </td>
+  </tr>
+  
+</table>
     
     <!-- Items Table -->
-    <table style="margin: 0; font-size: 7pt;">
-      <thead>
-        <tr>
-          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 4%;"><strong>S.No.</strong></th>
-          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 12%;"><strong>Part No.</strong></th>
-          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 14%;"><strong>Consumer Part No.</strong></th>
-          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 28%;"><strong>Description Of Goods</strong></th>
-          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 10%;"><strong>HSN/SAC</strong></th>
-          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 10%;"><strong>Quantity</strong></th>
-          <th style="border: 1px solid #000; border-left: none; text-align: center; width: 10%;"><strong>Rate</strong></th>
-          <th style="border: 1px solid #000; border-left: none; border-right: none; text-align: center; width: 12%;"><strong>Total</strong></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in doc.items %}
-        <tr style="height: 14px;">
-          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">{{ loop.index }}</td>
-          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">{{ item.item_code }}</td>
-          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">{{ item.customer_part_no or '' }}</td>
-          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">{{ item.description_of_goods or item.description or '' }}</td>
-          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">{{ item.hsn_sac_code or '' }}</td>
-          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">{{ item.qty }}</td>
-          <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: right;">{{ "{:,.2f}".format(item.rate) }}</td>
-          <td style="border-left: none; border-top: none; border-bottom: none; border-right: none; text-align: right;">{{ "{:,.2f}".format(item.amount) }}</td>
-        </tr>
-        {% endfor %}
-        
-        <!-- Empty rows to fill space if needed -->
-        {% set remaining_rows = 5 - doc.items|length %}
-        {% if remaining_rows > 0 and remaining_rows <= 5 %}
-          {% for i in range(remaining_rows) %}
-          <tr style="height: 14px;">
-            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
-            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
-            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
-            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
-            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
-            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
-            <td style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
-            <td style="border-left: none; border-top: none; border-bottom: none; border-right: none;">&nbsp;</td>
-          </tr>
-          {% endfor %}
+   <!-- Items Table with fixed column widths -->
+   <table class="items-table" style="margin: 0; font-size: 7pt;">
+    <thead>
+      <tr>
+        <th class="col-sno" style="border: 1px solid #000; border-left: none; text-align: left;font-size: 5pt;"><strong>S.No.</strong></th>
+        <th class="col-partno" style="border: 1px solid #000; border-left: none; text-align: center;"><strong>Part No.</strong></th>
+        <th class="col-consumer" style="border: 1px solid #000; border-left: none; text-align: center;"><strong>Consumer Part No.</strong></th>
+        <th class="col-desc" style="border: 1px solid #000; border-left: none; text-align: center;"><strong>Description Of Goods</strong></th>
+        <th class="col-hsn" style="border: 1px solid #000; border-left: none; text-align: center;"><strong>HSN/SAC</strong></th>
+        <th class="col-qty" style="border: 1px solid #000; border-left: none; text-align: center;"><strong>Quantity</strong></th>
+        <th class="col-rate" style="border: 1px solid #000; border-left: none; text-align: center;"><strong>Rate</strong></th>
+        <th class="col-total" style="border: 1px solid #000; border-left: none; border-right: none; text-align: center;"><strong>Total</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+    <!-- For each item in the items table with fixed column classes -->
+    {% for item in doc.items %}
+    <tr style="height: 10px;">
+      <td class="col-sno" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">
+        <div style="font-size: 9pt; margin: 0; line-height: 0.9;">{{ loop.index }}</div>
+      </td>
+      <td class="col-partno" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">
+        <div style="font-size: 9pt; margin: 0; line-height: 0.9;">{{ item.item_code }}</div>
+      </td>
+      <td class="col-consumer" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">
+        <div style="font-size: 9pt; margin: 0; line-height: 0.9;">{{ item.customer_part_no or '' }}</div>
+      </td>
+      <td class="col-desc" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">
+        <div style="font-size: 9pt; margin: 0; line-height: 0.9;">{{ item.description_of_goods or item.description or '' }}</div>
+      </td>
+      <td class="col-hsn" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">
+        <div style="font-size: 9pt; margin: 0; line-height: 0.9;">{{ item.hsn_sac_code or '' }}</div>
+      </td>
+      <td class="col-qty" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: center;">
+        <div style="font-size: 9pt; margin: 0; line-height: 0.9;">{{ format_indian_integer(item.qty|int) }} Nos.</div>
+      </td>
+      <td class="col-rate" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000; text-align: right;">
+        <div style="font-size: 9pt; margin: 0; line-height: 0.9;">{{ format_indian_number(item.rate) }}</div>
+      </td>
+      <td class="col-total" style="border-left: none; border-top: none; border-bottom: none; border-right: none; text-align: right;">
+        <div style="font-size: 9pt; margin: 0; line-height: 0.9;">{{ format_indian_number(item.amount) }}</div>
+      </td>
+    </tr>
+    {% endfor %}
+      
+    <!-- Empty rows with fixed column classes -->
+    {% set remaining_rows = 5 - doc.items|length %}
+    {% if remaining_rows > 0 and remaining_rows <= 5 %}
+      {% for i in range(remaining_rows) %}
+      <tr style="height: 12px;">
+        <td class="col-sno" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+        <td class="col-partno" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+        <td class="col-consumer" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+        <td class="col-desc" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+        <td class="col-hsn" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+        <td class="col-qty" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+        <td class="col-rate" style="border-left: none; border-top: none; border-bottom: none; border-right: 1px solid #000;">&nbsp;</td>
+        <td class="col-total" style="border-left: none; border-top: none; border-bottom: none; border-right: none;">&nbsp;</td>
+      </tr>
+      {% endfor %}
+    {% endif %}
+    </tbody>
+    <tfoot>
+      <!-- Total row with fixed column classes -->
+      <tr>
+        <td colspan="5" style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: right; font-weight: bold;">Total</td>
+        <td class="col-qty" style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: center; font-size: 9pt;">{{ format_indian_integer(doc.total_qty) }} Nos.</td>
+        <td class="col-rate" style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000;">&nbsp;</td>
+        <td class="col-total" style="border-left: none; border-right: none; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: right; font-weight: bold; font-size: 9pt;">{{ format_indian_number(doc.total) }}</td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="signatory-row compact-bottom">
+ <!-- Bottom Sections With Fixed Table Rows -->
+ <div style="display: table; width: 100%; border-collapse: collapse; font-size: 9pt; margin-top: 1px;">
+  <div style="display: table-row;">
+    <!-- Left Side: Total in words, Bank Details, Terms with proportional spacing -->
+    <div style="display: table-cell; width: 68%; vertical-align: top; border-right: 1px solid #000;">
+<!-- For Total in Words - Using Total Invoice Value directly -->
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="text-align: center; font-weight: bold; border-bottom: 1px solid #000; padding: 0px;">
+      <div style="font-size: 9pt;">Total in words</div>
+    </td>
+  </tr>
+  <tr>
+    <td style="border-bottom: 1px solid #000; padding: 1px; height: 15px; vertical-align: top; line-height: 1;">
+      <div style="font-size: 8pt; margin: 0;">
+        {% set taxable_value = doc.total + (doc.freight_charges or 0) + (doc.misc_charges or 0) %}
+        {% set in_words = frappe.utils.money_in_words(taxable_value) %}
+        {% if in_words.startswith('INR ') %}
+          {{ in_words[4:] }}
+        {% else %}
+          {{ in_words }}
         {% endif %}
-      </tbody>
-      <tfoot>
-        <!-- Total row -->
-        <tr>
-          <td colspan="5" style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: right; font-weight: bold;">Total</td>
-          <td style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: center;">{{ doc.total_qty }}</td>
-          <td style="border-left: none; border-right: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000;">&nbsp;</td>
-          <td style="border-left: none; border-right: none; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: right; font-weight: bold;">{{ "{:,.2f}".format(doc.total) }}</td>
-        </tr>
-      </tfoot>
-    </table>
-    
-    <!-- Bottom Sections With Fixed Table Rows -->
-    <div style="display: table; width: 100%; border-collapse: collapse; font-size: 7pt; margin-top: 2px;">
-      <div style="display: table-row;">
-        <!-- Left Side: Total in words, Bank Details, Terms -->
-        <div style="display: table-cell; width: 68%; vertical-align: top; border-right: 1px solid #000;">
-          <!-- Total in Words -->
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="text-align: center; font-weight: bold; border-bottom: 1px solid #000; padding: 1px;">
-                Total in words
-              </td>
-            </tr>
-            <tr>
-              <td style="border-bottom: 1px solid #000; padding: 2px; height: 18px; vertical-align: top; line-height: 1.1;">
-                {{ doc.in_words }}
-              </td>
-            </tr>
-          </table>
-          
-          <!-- Bank Details - Balanced height -->
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="text-align: center; font-weight: bold; border-bottom: 1px solid #000; padding: 1px;">
-                Bank Details
-              </td>
-            </tr>
-            <tr>
-              <td style="border-bottom: 1px solid #000; padding: 1px; height: 40px; vertical-align: top; line-height: 1;">
-                {% set company_address = frappe.get_doc("Address", doc.company_address) if doc.company_address else None %}
-                {% if company_address and company_address.bank_details %}
-                  {{ company_address.bank_details }}
-                {% endif %}
-              </td>
-            </tr>
-          </table>
-          
-          <!-- Terms and Conditions - Minimal but usable height -->
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="text-align: center; font-weight: bold; border-bottom: 1px solid #000; padding: 1px;">
-                Terms and Conditions
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 1px; height: 8px; vertical-align: top; line-height: 1;">
-                {{ doc.terms or '' }}
-              </td>
-            </tr>
-          </table>
-        </div>
-        
-        <!-- Right Side: Charges and Signature -->
-        <div style="display: table-cell; width: 32%; vertical-align: top;">
-          <!-- Add Charges Table -->
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td colspan="2" style="border-bottom: 1px solid #000; font-weight: bold; padding: 1px;">Add:</td>
-            </tr>
-            <tr>
-              <td style="width: 60%; border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">Freight Charges</td>
-              <td style="width: 40%; text-align: right; border-bottom: 1px solid #000; padding: 1px;">
-                {{ "{:,.2f}".format(doc.freight_charges or 0) }}
-              </td>
-            </tr>
-            <tr>
-              <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">Misc Charges</td>
-              <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
-                {{ "{:,.2f}".format(doc.misc_charges or 0) }}
-              </td>
-            </tr>
-            <tr>
-              <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">Taxable Value</td>
-              <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
-                {{ "{:,.2f}".format(doc.net_total) }}
-              </td>
-            </tr>
-            <tr>
-              <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">CGST</td>
-              <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
-                {% set cgst_amount = 0 %}
-                {% for tax in doc.taxes %}
-                  {% if tax.description and 'CGST' in tax.description %}
-                    {% set cgst_amount = tax.tax_amount %}
-                  {% endif %}
-                {% endfor %}
-                {{ "{:,.2f}".format(cgst_amount) }}
-              </td>
-            </tr>
-            <tr>
-              <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">SGST</td>
-              <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
-                {% set sgst_amount = 0 %}
-                {% for tax in doc.taxes %}
-                  {% if tax.description and 'SGST' in tax.description %}
-                    {% set sgst_amount = tax.tax_amount %}
-                  {% endif %}
-                {% endfor %}
-                {{ "{:,.2f}".format(sgst_amount) }}
-              </td>
-            </tr>
-            <tr>
-              <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold; padding: 1px;">Total Invoice Value</td>
-              <td style="text-align: right; border-bottom: 1px solid #000; font-weight: bold; padding: 1px;">
-                {{ "{:,.2f}".format(doc.grand_total) }}
-              </td>
-            </tr>
-          </table>
-          
-          <!-- Certification -->
-          <table style="width: 100%; border-collapse: collapse; margin-top: 2px;">
-            <tr>
-              <td style="border-bottom: 1px solid #000; text-align: center; padding: 1px;">
-                <span style="font-size: 7pt;">Certified that the particulars given above are true and correct.</span><br>
-                <span style="font-size: 7pt; font-weight: bold;">For PR Plastics</span>
-              </td>
-            </tr>
-            <tr>
-              <td style="height: 25px; border-bottom: 1px solid #000;">&nbsp;</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; padding: 1px;">
-                <span style="font-size: 7pt;">Authorised signatory</span>
-              </td>
-            </tr>
-          </table>
-        </div>
       </div>
+    </td>
+  </tr>
+</table>
+  
+ <!-- Bank Details - reduced height -->
+ <table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="text-align: center; font-weight: bold; border-bottom: 1px solid #000; padding: 0px;">
+      <div style="font-size: 9pt;">Bank Details</div>
+    </td>
+  </tr>
+  <tr>
+    <td style="border-bottom: 1px solid #000; padding: 1px; height: 40px; vertical-align: top; line-height: 1;">
+      <div style="font-size: 8pt; margin: 0;">
+        <strong>Bank Name:</strong> HDFC Bank<br>
+        <strong>Account No:</strong> 50200012345678<br>
+        <strong>IFSC Code:</strong> HDFC0001234<br>
+        <strong>Account Name:</strong> PR PLASTICS
+      </div>
+    </td>
+  </tr>
+</table>
+  
+  <!-- Terms and Conditions - reduced height -->
+  <table style="width: 100%; border-collapse: collapse;">
+    <tr>
+      <td style="text-align: center; font-weight: bold; border-bottom: 1px solid #000; padding: 0px;">
+        <div style="font-size: 9pt;">Terms and Conditions</div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 1px; height: 10px; vertical-align: top; line-height: 1;">
+        <div style="font-size: 8pt; margin: 0;">{{ doc.terms or '' }}</div>
+      </td>
+    </tr>
+  </table>
+</div>
+    
+    <!-- Right Side: Charges and Signature -->
+    <div style="display: table-cell; width: 32%; vertical-align: top;">
+    <!-- For Charges Section with Updated Calculations -->
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td colspan="2" style="border-bottom: 1px solid #000; font-weight: bold; padding: 1px;">
+      <div style="font-size: 9pt;">Add:</div>
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 60%; border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">Freight Charges</div>
+    </td>
+    <td style="width: 40%; text-align: right; border-bottom: 1px solid #000; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">{{ "{:,.2f}".format(doc.freight_charges or 0) }}</div>
+    </td>
+  </tr>
+  <tr>
+    <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">Misc Charges</div>
+    </td>
+    <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">{{ "{:,.2f}".format(doc.misc_charges or 0) }}</div>
+    </td>
+  </tr>
+  <tr>
+    <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">Taxable Value</div>
+    </td>
+    <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">
+        {% set taxable_value = doc.total + (doc.freight_charges or 0) + (doc.misc_charges or 0) %}
+        {{ format_indian_number(taxable_value) }}
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">CGST</div>
+    </td>
+    <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">
+        {% set cgst_amount = 0 %}
+        {% for tax in doc.taxes %}
+          {% if tax.description and 'CGST' in tax.description %}
+            {% set cgst_amount = tax.tax_amount %}
+          {% endif %}
+        {% endfor %}
+        {{ "{:,.2f}".format(cgst_amount) }}
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">SGST</div>
+    </td>
+    <td style="text-align: right; border-bottom: 1px solid #000; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">
+        {% set sgst_amount = 0 %}
+        {% for tax in doc.taxes %}
+          {% if tax.description and 'SGST' in tax.description %}
+            {% set sgst_amount = tax.tax_amount %}
+          {% endif %}
+        {% endfor %}
+        {{ "{:,.2f}".format(sgst_amount) }}
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">Total Invoice Value</div>
+    </td>
+    <td style="text-align: right; border-bottom: 1px solid #000; font-weight: bold; padding: 1px;">
+      <div style="font-size: 9pt; margin: 0;">
+        {% set taxable_value = doc.total + (doc.freight_charges or 0) + (doc.misc_charges or 0) %}
+        {% set total_invoice_value = taxable_value + cgst_amount + sgst_amount %}
+        {{ format_indian_number(total_invoice_value) }}
+      </div>
+    </td>
+  </tr>
+</table>
+<!-- Certification with reduced height -->
+<table style="width: 100%; border-collapse: collapse; margin-top: 0px;">
+  <tr>
+    <td style="border-bottom: 1px solid #000; text-align: center; padding: 0px;">
+      <div style="font-size: 8pt; margin: 0; font-weight: bold;">For PR Plastics</div>
+    </td>
+  </tr>
+  <tr>
+    <td style="height: 15px; border-bottom: 1px solid #000;">&nbsp;</td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding: 0px;">
+      <div style="font-size: 8pt; margin: 0;">Authorised signatory</div>
+    </td>
+  </tr>
+</table>
     </div>
+  </div>
+</div>
+  </div>
   </div>
 </body>
 </html>

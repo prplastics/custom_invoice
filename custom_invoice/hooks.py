@@ -45,6 +45,14 @@ fixtures = [
         "filters": [["doc_type", "in", ["Item", "Sales Invoice Item"]]]
    }
 ]
+
+# Add methods and filters to jinja environment
+jinja = {
+    "methods": [
+        "custom_invoice.utils.format_indian_number",
+        "custom_invoice.utils.format_indian_integer"
+    ]
+}
 # Apps
 # ------------------
 
