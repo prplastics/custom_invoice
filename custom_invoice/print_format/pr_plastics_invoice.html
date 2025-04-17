@@ -127,19 +127,19 @@ tr.empty-row {
       <img src="/assets/custom_invoice/images/pr_plastics_header.png" alt="PR Plastics Header" style="width: 100%; max-width: 800px; height: auto; max-height: 30mm; display: block; margin: 0 auto;">
     </div>
     
-    <!-- GSTIN and Invoice Title Row -->
-    <table style="margin: 0; border-bottom: 1px solid #000;">
-      <tr>
-        <td style="width: 33%; border-right: 1px solid #000; font-size: 8pt;">
-          GSTIN: 33ATNPR3816R1ZW
-        <td style="width: 33%; border-right: 1px solid #000; text-align: center;">
-          <strong style="font-size: 8pt;">INVOICE</strong>
-        </td>
-        <td style="width: 33%; text-align: right; font-size: 8pt;" >
-         Triplicate
-        </td>
-      </tr>
-    </table>
+<!-- GSTIN and Invoice Title Row -->
+<table style="margin: 0; border-bottom: 1px solid #000;">
+  <tr>
+    <td style="width: 33%; border-right: 1px solid #000; font-size: 8pt;">
+      GSTIN: 33ATNPR3816R1ZW
+    <td style="width: 33%; border-right: 1px solid #000; text-align: center;">
+      <strong style="font-size: 8pt;">INVOICE</strong>
+    </td>
+    <td style="width: 33%; text-align: right; font-size: 8pt;" id="copy-type-label">
+      Original
+    </td>
+  </tr>
+</table>
     
     <!-- Customer and Invoice Details Section -->
     <table style="margin: 0; border-bottom: 1px solid #000;">
@@ -331,8 +331,17 @@ tr.empty-row {
               </td>
             </tr>
             <tr>
-              <td style="padding: 1px; height: 10px; vertical-align: top; line-height: 1;">
-                <div style="font-size: 8pt; margin: 0;">{{ doc.terms or '' }}</div>
+              <td style="padding: 1px; height: 10px; vertical-align: top; line-height: 1.1;">
+                <div style="font-size: 8pt; margin: 0; font-family: Arial, sans-serif; color: #333232;">
+                  {% if doc.terms %}
+                    {{ doc.terms }}
+                  {% else %}
+                    1. Payment is due within 30 days from the invoice date.<br>
+                    2. Overdue payments may be subject to a late payment fee of 1.5%.<br>
+                    3. All transactions are governed by the laws of India.<br>
+                    4. Subject to Coimbatore jurisdiction.
+                  {% endif %}
+                </div>
               </td>
             </tr>
           </table>

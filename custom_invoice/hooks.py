@@ -12,10 +12,11 @@ after_install = [
     "custom_invoice.add_print_format.add_print_format"
 ]
 
-# Include custom JS
-# ------------------
 doctype_js = {
-    "Sales Invoice": "public/js/custom_invoice.js"
+    "Sales Invoice": [
+        "public/js/custom_invoice.js",
+        "public/js/invoice_print.js"
+    ]
 }
 
 # Fixtures
@@ -53,6 +54,8 @@ jinja = {
         "custom_invoice.utils.format_indian_integer"
     ]
 }
+
+
 # Apps
 # ------------------
 

@@ -71,6 +71,15 @@ def after_install():
                 "insert_after": "order_details",
                 "translatable": 0,
                 "print_hide_if_no_value": 1  # Hide in print if no value
+            },
+            {
+                "fieldname": "print_copies",
+                "label": "Print Copies",
+                "fieldtype": "Select",
+                "options": "Original\nOriginal,Duplicate\nOriginal,Duplicate,Triplicate\nOriginal,Duplicate,Triplicate,Quadruplicate\nOriginal,Duplicate,Triplicate,Quadruplicate,Transport",
+                "default": "Original,Duplicate,Triplicate",
+                "insert_after": "other_details_section",
+                "description": "Select which copies to print"
             }
         ],
         "Item": [
@@ -137,3 +146,4 @@ def after_install():
     make_property_setter("Sales Invoice Item", None, "max_columns", 8, "Int")
     
     frappe.msgprint("Custom fields added to Sales Invoice and Item doctype, field labels updated, and Sales Invoice Item table customized")
+

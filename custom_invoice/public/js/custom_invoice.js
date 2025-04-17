@@ -17,6 +17,7 @@ frappe.ui.form.on('Sales Invoice Item', {
     }
 });
 
+
 // Helper function to strip HTML tags
 function strip_html(html) {
     if (!html) return '';
