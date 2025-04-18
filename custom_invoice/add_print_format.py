@@ -25,10 +25,10 @@ def add_print_format():
     pf.format_data = None
     
     # Set consistent small margins (5mm = ~0.2in)
-    pf.margin_top = "5mm"
-    pf.margin_bottom = "5mm"
-    pf.margin_left = "5mm"
-    pf.margin_right = "5mm"
+    pf.margin_top = "2mm"
+    pf.margin_bottom = "2mm"
+    pf.margin_left = "2mm"
+    pf.margin_right = "2mm"
     
     # Load HTML from template file if it exists, otherwise use embedded HTML
     template_path = os.path.join(

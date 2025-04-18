@@ -55,7 +55,18 @@ def print_multiple_copies(doctype, name, print_format=None, copies=None):
             combined_html += modified_html
         
         # Generate PDF from the combined HTML
-        pdf_data = get_pdf(combined_html)
+        # Generate PDF from the combined HTML with zero margins
+        pdf_data = get_pdf(
+            combined_html,
+            {
+                'margin-top': '2mm',
+                'margin-right': '2mm',
+                'margin-bottom': '2mm',
+                'margin-left': '2mm',
+                'page-size': 'A4',
+                'print-media-type': True
+            }
+        )
         
         # Save the combined PDF as a file
         filename = f"{doctype.replace(' ', '_')}_{name}_copies.pdf"
