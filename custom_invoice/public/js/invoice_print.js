@@ -110,3 +110,4 @@ function print_selected_copies(frm, copies) {
         frappe.msgprint(__("Please save and submit the document before printing copies."));
     }
 }
+
