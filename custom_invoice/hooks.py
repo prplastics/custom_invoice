@@ -55,6 +55,12 @@ jinja = {
     ]
 }
 
+doc_events = {
+    "Sales Invoice": {
+        "autoname": "custom_invoice.utils.custom_invoice_naming"
+    }
+}
+
 # Apps
 # ------------------
 

@@ -1,3 +1,17 @@
+import frappe
+from frappe.model.naming import make_autoname
+from datetime import datetime
+
+def custom_invoice_naming(doc, method=None):
+    if doc.doctype == "Sales Invoice" and not doc.name:
+        # Get current date in YYYYMMDD format
+        date_str = datetime.now().strftime("%Y%m%d")
+        # Construct series prefix
+        series_prefix = f"PRP-{date_str}-"
+        # Now call make_autoname with prefix and series part separated
+        doc.name = make_autoname(series_prefix + ".####")
+
+
 def format_indian_number(number, decimal_places=2):
     """
     Format a number in Indian style with commas (e.g., 10,00,000.00)
