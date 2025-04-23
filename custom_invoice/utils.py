@@ -4,8 +4,8 @@ from datetime import datetime
 
 def custom_invoice_naming(doc, method=None):
     if doc.doctype == "Sales Invoice" and not doc.name:
-        # Get current date in YYYYMMDD format
-        date_str = datetime.now().strftime("%Y%m%d")
+        # Get current date in YYYYMM format
+        date_str = datetime.now().strftime("%Y%m")
         # Construct series prefix
         series_prefix = f"PRP-{date_str}-"
         # Now call make_autoname with prefix and series part separated
